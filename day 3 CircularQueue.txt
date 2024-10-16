@@ -1,0 +1,60 @@
+class CircularQueue:
+    def __init__(self, size):
+        self.size = size
+        self.queue = [None] * size  # Initialize the queue with None
+        self.front = -1  # The front pointer
+        self.rear = -1  # The rear pointer
+
+    # Enqueue operation to add an element
+    def enqueue(self, data):
+        if (self.rear + 1) % self.size == self.front:
+            print("Queue is Full!")  # Queue is full
+        else:
+            if self.front == -1:  # First element to insert
+                self.front = 0
+            self.rear = (self.rear + 1) % self.size  # Circular increment
+            self.queue[self.rear] = data
+            print(f"Inserted {data}")
+
+    # Dequeue operation to remove an element
+    def dequeue(self):
+        if self.front == -1:
+            print("Queue is Empty!")  # Queue is empty
+            return None
+        else:
+            data = self.queue[self.front]
+            if self.front == self.rear:  # Only one element was in the queue
+                self.front = self.rear = -1
+            else:
+                self.front = (self.front + 1) % self.size  # Circular increment
+            print(f"Removed {data}")
+            return data
+
+    # Display the current state of the queue
+    def display(self):
+        if self.front == -1:
+            print("Queue is Empty")
+        else:
+            print("Queue elements are:", end=" ")
+            if self.rear >= self.front:
+                for i in range(self.front, self.rear + 1):
+                    print(self.queue[i], end=" ")
+            else:
+                for i in range(self.front, self.size):
+                    print(self.queue[i], end=" ")
+                for i in range(0, self.rear + 1):
+                    print(self.queue[i], end=" ")
+            print()
+
+# Example usage:
+cq = CircularQueue(5)
+cq.enqueue(10)
+cq.enqueue(15)
+cq.enqueue(30)
+cq.enqueue(40)
+cq.display()
+cq.dequeue()
+cq.display()
+cq.enqueue(50)
+cq.enqueue(60)
+cq.display()

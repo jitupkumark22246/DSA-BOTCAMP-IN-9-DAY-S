@@ -1,0 +1,113 @@
+# Node class for a linked list node
+class Node:
+    def __init__(self, data):
+        self.data = data  # Initialize the node with data
+        self.next = None  # Initialize the next pointer as None
+
+# LinkedList class to manage the linked list
+class LinkedList:
+    def __init__(self):
+        self.head = None  # Initialize the head of the list as None
+
+    # Insert a new node at the beginning
+    def insert_at_beginning(self, data):
+        new_node = Node(data)  # Create a new node
+        new_node.next = self.head  # Make the new node point to the current head
+        self.head = new_node  # Update the head to be the new node
+        print(f"Inserted {data} at the beginning.")
+
+    # Insert a new node at the end
+    def insert_at_end(self, data):
+        new_node = Node(data)
+        if self.head is None:  # If the list is empty
+            self.head = new_node
+            print(f"Inserted {data} as the first node (end).")
+            return
+        last = self.head
+        while last.next:  # Traverse to the last node
+            last = last.next
+        last.next = new_node  # Make the last node point to the new node
+        print(f"Inserted {data} at the end.")
+
+    # Insert a new node after a given node
+    def insert_after(self, prev_data, data):
+        current = self.head
+        while current and current.data != prev_data:  # Find the previous node
+            current = current.next
+        if not current:
+            print(f"Node with data {prev_data} not found.")
+            return
+        new_node = Node(data)
+        new_node.next = current.next  # Make the new node point to the next of previous node
+        current.next = new_node  # Make the previous node point to the new node
+        print(f"Inserted {data} after {prev_data}.")
+
+    # Delete the first node
+    def delete_at_beginning(self):
+        if self.head is None:  # If the list is empty
+            print("List is empty.")
+            return
+        self.head = self.head.next  # Move the head pointer to the next node
+        print("Deleted the first node.")
+
+    # Delete the last node
+    def delete_at_end(self):
+        if self.head is None:  # If the list is empty
+            print("List is empty.")
+            return
+        if self.head.next is None:  # If there's only one node
+            self.head = None
+            print("Deleted the last node.")
+            return
+        second_last = self.head
+        while second_last.next.next:  # Traverse to the second last node
+            second_last = second_last.next
+        second_last.next = None  # Remove the last node
+        print("Deleted the last node.")
+
+    # Delete a node by value
+    def delete_by_value(self, data):
+        current = self.head
+        if current and current.data == data:  # If the head node holds the value
+            self.head = current.next  # Update the head
+            print(f"Deleted node with value {data}.")
+            return
+        prev = None
+        while current and current.data != data:  # Traverse to find the node
+            prev = current
+            current = current.next
+        if current is None:  # Node not found
+            print(f"Node with value {data} not found.")
+            return
+        prev.next = current.next  # Unlink the node
+        print(f"Deleted node with value {data}.")
+
+    # Display the linked list
+    def display(self):
+        if self.head is None:
+            print("The list is empty.")
+            return
+        current = self.head
+        print("Linked List:", end=" ")
+        while current:
+            print(current.data, end=" -> ")
+            current = current.next
+        print("None")
+
+# Example usage
+ll = LinkedList()
+
+# Insertion examples
+ll.insert_at_beginning(10)
+ll.insert_at_end(20)
+ll.insert_at_end(30)
+ll.insert_after(20, 25)
+ll.display()
+
+# Deletion examples
+ll.delete_at_beginning()
+ll.display()
+ll.delete_at_end()
+ll.display()
+ll.delete_by_value(25)
+ll.display()

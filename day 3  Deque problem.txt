@@ -1,0 +1,95 @@
+class Deque:
+    def __init__(self, size):
+        self.size = size
+        self.deque = [None] * size
+        self.front = -1
+        self.rear = 0
+
+    # Insert element at the front
+    def insert_front(self, data):
+        if (self.front == 0 and self.rear == self.size - 1) or (self.front == self.rear + 1):
+            print("Deque is Full!")
+        else:
+            if self.front == -1:  # First element to insert
+                self.front = 0
+                self.rear = 0
+            elif self.front == 0:
+                self.front = self.size - 1  # Circularly move front pointer
+            else:
+                self.front = self.front - 1
+            self.deque[self.front] = data
+            print(f"Inserted {data} at front")
+
+    # Insert element at the rear
+    def insert_rear(self, data):
+        if (self.front == 0 and self.rear == self.size - 1) or (self.front == self.rear + 1):
+            print("Deque is Full!")
+        else:
+            if self.front == -1:  # First element to insert
+                self.front = 0
+                self.rear = 0
+            elif self.rear == self.size - 1:
+                self.rear = 0  # Circularly move rear pointer
+            else:
+                self.rear = self.rear + 1
+            self.deque[self.rear] = data
+            print(f"Inserted {data} at rear")
+
+    # Delete element from the front
+    def delete_front(self):
+        if self.front == -1:
+            print("Deque is Empty!")
+            return None
+        else:
+            data = self.deque[self.front]
+            if self.front == self.rear:  # Only one element was in the deque
+                self.front = self.rear = -1
+            elif self.front == self.size - 1:
+                self.front = 0  # Circularly move front pointer
+            else:
+                self.front = self.front + 1
+            print(f"Removed {data} from front")
+            return data
+
+    # Delete element from the rear
+    def delete_rear(self):
+        if self.front == -1:
+            print("Deque is Empty!")
+            return None
+        else:
+            data = self.deque[self.rear]
+            if self.front == self.rear:  # Only one element was in the deque
+                self.front = self.rear = -1
+            elif self.rear == 0:
+                self.rear = self.size - 1  # Circularly move rear pointer
+            else:
+                self.rear = self.rear - 1
+            print(f"Removed {data} from rear")
+            return data
+
+    # Display the current state of the deque
+    def display(self):
+        if self.front == -1:
+            print("Deque is Empty")
+        else:
+            print("Deque elements are:", end=" ")
+            if self.rear >= self.front:
+                for i in range(self.front, self.rear + 1):
+                    print(self.deque[i], end=" ")
+            else:
+                for i in range(self.front, self.size):
+                    print(self.deque[i], end=" ")
+                for i in range(0, self.rear + 1):
+                    print(self.deque[i], end=" ")
+            print()
+
+# Example usage:
+dq = Deque(5)
+dq.insert_front(10)
+dq.insert_rear(20)
+dq.insert_front(30)
+dq.display()
+dq.delete_rear()
+dq.display()
+dq.delete_front()
+dq.display()
