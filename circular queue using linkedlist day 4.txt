@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct CircularQueue {
+    struct Node *front, *rear;
+};
+
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    return node;
+}
+
+struct CircularQueue* createQueue() {
+    struct CircularQueue* q = (struct CircularQueue*)malloc(sizeof(struct CircularQueue));
+    q->front = q->rear = NULL;
+    return q;
+}
+
+int isEmpty(struct CircularQueue* q) {
+    return (q->front == NULL);
+}
+
+void enqueue(struct CircularQueue* q, int data) {
+    struct Node* node = newNode(data);
+
+    if (isEmpty(q)) {
+        q->front = q->rear = node;
+        q->rear->next = q->front;  // Make it circular
+    } else {
+        q->rear->next = node;
+        q->rear = node;
+        q->rear->next = q->front;  // Rear's next points to front
+    }
+    printf("%d enqueued to queue\n", data);
+}
+
+int dequeue(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue underflow\n");
+        return -1;
+    }
+
+    int data;
+    if (q->front == q->rear) {
+        data = q->front->data;
+        free(q->front);
+        q->front = q->rear = NULL;  // Queue becomes empty
+    } else {
+        struct Node* temp = q->front;
+        data = temp->data;
+        q->front = q->front->next;
+        q->rear->next = q->front;  // Maintain circularity
+        free(temp);
+    }
+    return data;
+}
+
+int peek(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return -1;
+    }
+    return q->front->data;
+}
+
+int main() {
+    struct CircularQueue* q = createQueue();
+
+    enqueue(q, 10);
+    enqueue(q, 20);
+    enqueue(q, 30);
+
+    printf("Front element is %d\n", peek(q));
+
+    printf("%d dequeued from queue\n", dequeue(q));
+    printf("Front element is now %d\n", peek(q));
+
+    enqueue(q, 40);
+    printf("Front element is %d\n", peek(q));
+
+    return 0;
+}
