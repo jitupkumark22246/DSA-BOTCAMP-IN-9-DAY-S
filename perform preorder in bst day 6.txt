@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* newNode(int item) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = item;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+void preorder(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);
+
+        preorder(root->left);
+
+        preorder(root->right);
+    }
+}
+
+struct Node* insert(struct Node* node, int data) {
+    if (node == NULL) return newNode(data);
+
+    if (data < node->data)
+        node->left = insert(node->left, data);
+    else if (data > node->data)
+        node->right = insert(node->right, data);
+
+    return node;
+}
+
+int main() {
+    struct Node* root = NULL;
+    root = insert(root, 45);
+    insert(root, 30);
+    insert(root, 50);
+    insert(root, 20);
+    insert(root, 65);
+    insert(root, 60);
+    insert(root, 82);
+
+    printf("Pre-order traversal: ");
+    preorder(root);
+
+    return 0;
+}
