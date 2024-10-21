@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node in the binary search tree
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* newNode(int item) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = item;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+// Function to perform post-order traversal
+void postorder(struct Node* root) {
+    if (root != NULL) {
+        // Traverse the left subtree
+        postorder(root->left);
+
+        // Traverse the right subtree
+        postorder(root->right);
+
+        // Visit the root node
+        printf("%d ", root->data);
+    }
+}
+
+// Function to insert a new node into the BST
+struct Node* insert(struct Node* node, int data) {
+    // If the tree is empty, return a new node
+    if (node == NULL) return newNode(data);
+
+    // Otherwise, recursively insert the new node
+    if (data < node->data)
+        node->left = insert(node->left, data);
+    else if (data > node->data)
+        node->right = insert(node->right, data);
+
+    return node;
+}
+
+int main() {
+    // Creating a sample binary search tree
+    struct Node* root = NULL;
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 70);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 60);
+    insert(root, 80);
+
+    // Performing post-order traversal
+    printf("Post-order traversal: ");
+    postorder(root);
+
+    return 0;
+}
