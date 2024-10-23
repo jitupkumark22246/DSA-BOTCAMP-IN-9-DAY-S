@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Edge {
+    int src, dest, weight;
+};
+
+int compareEdges(const void* a, const void* b) {
+    struct Edge* a1 = (struct Edge*)a;
+    struct Edge* b1 = (struct Edge*)b;
+    return a1->weight > b1->weight;
+}
+
+void printEdges(struct Edge edges[], int E) {
+    printf("Edges sorted by weight:\n");
+    for (int i = 0; i < E; i++) {
+        printf("Edge: %d -- %d \t Weight: %d\n", edges[i].src, edges[i].dest, edges[i].weight);
+    }
+}
+
+int main() {
+    int E = 5; // Number of edges
+
+    struct Edge edges[] = {
+        {0, 1, 4},
+        {0, 2, 8},
+        {1, 2, 2},
+        {1, 3, 6},
+        {2, 3, 3}
+    };
+
+    // Print original edges
+    printf("Original edges:\n");
+    for (int i = 0; i < E; i++) {
+        printf("Edge: %d -- %d \t Weight: %d\n", edges[i].src, edges[i].dest, edges[i].weight);
+    }
+
+    qsort(edges, E, sizeof(edges[0]), compareEdges);
+
+    // Print sorted edges
+    printEdges(edges, E);
+
+    return 0;
+}
